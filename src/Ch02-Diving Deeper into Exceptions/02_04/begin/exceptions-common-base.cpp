@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 enum ErrorType
 {
@@ -8,22 +10,34 @@ enum ErrorType
     FileIO
 };
 
-class DiskAccessException {};
+class DiskAccessException : public std::runtime_error
+{
+    public:
+    DiskAccessException(const std::string& msg) : std::runtime_error(msg){}
+};
 
-class FilePermissionException {};
+class FilePermissionException : public std::runtime_error
+{
+    public:
+        FilePermissionException(const std::string &msg) : std::runtime_error(msg) {}
+};
 
-class FileIOException {};
+class FileIOException : public std::runtime_error 
+{
+    public:
+        FileIOException(const std::string &msg) : std::runtime_error(msg) {}
+};
 
 void triggerException(ErrorType error)
 {
     switch (error)
     {    
     case ErrorType::Disk:
-        throw DiskAccessException();
+        throw DiskAccessException("Disk access error");
     case ErrorType::Permission:
-        throw FilePermissionException();
+        throw FilePermissionException("Permission denied");
     case ErrorType::FileIO:
-        throw FileIOException();
+        throw FileIOException("File IO error");
     default:
         break; // No exception thrown
     }
@@ -33,19 +47,23 @@ int main()
 {
     try
     {
-        triggerException(ErrorType::Disk);
+        triggerException(ErrorType::Permission);
     }    
     catch (const DiskAccessException &e)
     {
-        std::cerr << "DiskAccessException" << std::endl;
+        std::cerr << "DiskAccessException: " << e.what() << std::endl;
     }
     catch (const FilePermissionException &e)
     {
-        std::cerr << "FilePermissionException" << std::endl;
+        std::cerr << "FilePermissionException: " << e.what() << std::endl;
     }
     catch (const FileIOException &e)
     {
-        std::cerr << "FileIOException" << std::endl;
+        std::cerr << "FileIOException: " << e.what() << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "std::exception " << e.what() << std::endl;
     }
     catch (...)
     {

@@ -7,6 +7,10 @@ using namespace std;
 const string readConfigFile(const string& filename) 
 {
     ifstream file(filename);
+    if(!file.good())
+    {
+        throw runtime_error("Failed to open file");
+    }
 
     string line;
     string text;
@@ -21,10 +25,15 @@ const string readConfigFile(const string& filename)
 
 int main() 
 {    
+    try{
     cout << "Reading configuration:" << endl;
     string text = readConfigFile("configuration.txt");
     cout << text;
-    
+    }
+    catch (const exception &e){
+        cout << "Error: " << e.what() << endl;
+        return -1;
+    }
     return 0;
 }
 

@@ -38,9 +38,9 @@ int main()
     {
         triggerException();
     }
-    catch (BaseException e)
+    catch (const BaseException &e)
     { // Catching by value - Slicing occurs here
-        std::cerr << "Caught by value: " << e.what() << std::endl;
+        std::cerr << "Caught by reference: " << e.what() << std::endl;
     }
     return 0;
 }

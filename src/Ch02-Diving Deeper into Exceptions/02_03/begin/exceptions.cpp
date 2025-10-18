@@ -33,7 +33,20 @@ int main()
 {
     try
     {
-        triggerException(ErrorType::None);
+        triggerException(ErrorType::FileIO);
+    }
+    catch (const DiskAccessException& e)
+    {
+        std::cerr << "DiskAccessException" << std::endl;
+
+    }
+    catch (const FilePermissionException &e)
+    {
+        std::cerr << "FilePermissionException" << std::endl;
+    }
+    catch (const FileIOException &e)
+    {
+        std::cerr << "FileIOException" << std::endl;
     }
     catch (...)
     {
